@@ -1,0 +1,82 @@
+CREATE TABLE Study_Key (
+    ->     NCT_NUMBER VARCHAR(20) PRIMARY KEY,
+    ->     STUDY_TITLE VARCHAR(1000);
+Query OK, 0 rows affected (0.17 sec)
+CREATE TABLE Study_Description (
+    ->     NCT_NUMBER VARCHAR(20)
+    ->     STUDY_TITLE VARCHAR(1000), 
+    ->     STUDY_URL VARCHAR(500),
+    ->     STUDY_STATUS VARCHAR(50),
+    ->     STUDY_TYPE VARCHAR(100)
+ ->     FOREIGN KEY (NCT_NUMBER) REFERENCES Study_Key (NCT_NUMBER)
+    -> );
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> CREATE TABLE Study_Dates (
+    ->     NCT_NUMBER VARCHAR(20),
+    ->     START_DATE DATE,
+    ->     COMPLETION_DATE DATE,
+    ->     FOREIGN KEY (NCT_NUMBER) REFERENCES Study_Key (NCT_NUMBER)
+    -> );
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> CREATE TABLE Study_Demographics (
+    ->     NCT_NUMBER VARCHAR(20),
+    ->     STUDY_TITLE VARCHAR(1000),
+    ->     SEX VARCHAR(20),
+    ->     FOREIGN KEY (NCT_NUMBER) REFERENCES Study_Key (NCT_NUMBER)
+    -> );
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> CREATE TABLE Study_Contributors (
+    ->     NCT_NUMBER VARCHAR(20),
+    ->     SPONSOR VARCHAR(1000),
+    ->     COLLABORATORS VARCHAR(1000),
+->     FOREIGN KEY (NCT_NUMBER) REFERENCES Study_Key (NCT_NUMBER)
+    -> );
+Query OK, 0 rows affected (0.19 sec)
+// QUERY TO LOAD CSV FILES INTO THE TABLES
+LOAD DATA
+    INFILE '/home/coder/project/CSV FILES/Study_Keys.csv'
+     INTO TABLE Study_Key
+    FIELDS
+        TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '"'
+        ESCAPED BY '"'
+    IGNORE 1 ROWS;
+
+    LOAD DATA
+    INFILE '/home/coder/project/CSV FILES/Study_Contributors.csv'
+     INTO TABLE Study_Contributors
+    FIELDS
+        TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '"'
+        ESCAPED BY '"'
+    IGNORE 1 ROWS;
+
+LOAD DATA
+    INFILE '/home/coder/project/CSV FILES/Study_Demographics.csv'
+     INTO TABLE Study_Demographics
+    FIELDS
+        TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '"'
+        ESCAPED BY '"'
+    IGNORE 1 ROWS;
+
+LOAD DATA
+    INFILE '/home/coder/project/CSV FILES/Study_Description.csv'
+     INTO TABLE Study_Description
+    FIELDS
+        TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '"'
+        ESCAPED BY '"'
+    IGNORE 1 ROWS;
+
+LOAD DATA
+    INFILE '/home/coder/project/CSV FILES/tireddates.csv'
+     INTO TABLE Study_Dates
+    FIELDS
+        TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '"'
+        ESCAPED BY '"'
+    IGNORE 1 ROWS;
